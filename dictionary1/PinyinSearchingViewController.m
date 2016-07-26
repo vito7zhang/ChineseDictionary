@@ -9,6 +9,7 @@
 #import "PinyinSearchingViewController.h"
 #import "SqliteManager.h"
 #import "PinyinModel.h"
+#import "ResultViewController.h"
 
 @interface PinyinSearchingViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -37,7 +38,7 @@
         self.index -= 1;
     }
     [myTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.index-65] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    
+    myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beijing"]];
 }
 
 -(void)initData{
@@ -75,6 +76,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
     }
+    cell.backgroundColor = [UIColor clearColor];
     NSArray *array = dataSource[indexPath.section];
     PinyinModel *m = array[indexPath.row];
     cell.textLabel.text = m.pinyin;
@@ -87,6 +89,18 @@
 -(NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     return pyArr;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    ResultViewController *resultVC = [ResultViewController new];
+    resultVC.isPinyin = YES;
+    PinyinModel *m = dataSource[indexPath.section][indexPath.row];
+    resultVC.searchWord = m.pinyin;
+    [self.navigationController pushViewController:resultVC animated:YES];
+}
+
+
+
+
 
 
 

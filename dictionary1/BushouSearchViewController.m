@@ -9,6 +9,7 @@
 #import "BushouSearchViewController.h"
 #import "SqliteManager.h"
 #import "BushouModel.h"
+#import "ResultViewController.h"
 
 @interface BushouSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -32,6 +33,7 @@
     self.title = @"部首检字";
     
     [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.index-1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beijing"]];
 }
 
 -(void)initData{
@@ -61,6 +63,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"bsReuse"];
     }
+    cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.text = [(BushouModel *)[(NSArray *)dataSource[indexPath.section] objectAtIndex:indexPath.row] bushou];
     return cell;
 }
@@ -70,6 +73,18 @@
 -(NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     return bhArr;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    BushouModel *m = dataSource[indexPath.section][indexPath.row];
+    ResultViewController *resultVC = [ResultViewController new];
+    resultVC.isPinyin = NO;
+    resultVC.bsID = m.bs_id;
+    resultVC.searchWord = m.bushou;
+    [self.navigationController pushViewController:resultVC animated:YES];
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

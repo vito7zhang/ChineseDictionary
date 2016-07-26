@@ -17,8 +17,8 @@
 }
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
     if ([location hasDirectoryPath] == NO) {
-        NSURL *url = [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)firstObject] stringByAppendingPathComponent:@""]];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+//        NSURL *url = [NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)firstObject] stringByAppendingPathComponent:@""]];
+//        NSFileManager *fileManager = [NSFileManager defaultManager];
         
     }
 }

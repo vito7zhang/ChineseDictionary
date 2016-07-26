@@ -1,0 +1,15 @@
+PODS:
+  - MJRefresh (3.1.12)
+  - YYKit (1.0.7):
+    - YYKit/no-arc (= 1.0.7)
+  - YYKit/no-arc (1.0.7)
+
+DEPENDENCIES:
+  - MJRefresh (= 3.1.12)
+  - YYKit (~> 1.0.7)
+
+SPEC CHECKSUMS:
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
+
+COCOAPODS: 0.39.0
