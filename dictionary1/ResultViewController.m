@@ -12,11 +12,14 @@
 #import <iflyMSC/IFlySpeechConstant.h>
 #import <iflyMSC/IFlySpeechSynthesizer.h>
 #import <iflyMSC/IFlySpeechSynthesizerDelegate.h>
+#import <MJRefresh.h>
+#import "WordViewController.h"
 
 @interface ResultViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechSynthesizerDelegate>
 {
     NSMutableArray *dataSource;
     IFlySpeechSynthesizer *_iFlySpeechSynthesizer;
+    int index;
 }
 @property (nonatomic,strong)UITableView *resultTableView;
 @end
@@ -34,10 +37,38 @@
     [self.resultTableView registerNib:[UINib nibWithNibName:@"ResultTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:NSStringFromClass([ResultTableViewCell class])];
     self.resultTableView.rowHeight = 88;
     self.resultTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beijing"]];
+    
+    self.resultTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(initData)];
+    self.resultTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(moreData)];
 }
 
-     
+
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return dataSource.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ResultTableViewCell class])];
+    cell.backgroundColor = [UIColor clearColor];
+    ResultModel *m = dataSource[indexPath.row];
+    cell.wordLabel.text = m.simp;
+    cell.zhuyinLabel.text = [NSString stringWithFormat:@"[%@]",m.pinyin];
+    cell.bushouLabel.text = [NSString stringWithFormat:@"部首：%@",m.bushou];
+    cell.bihuaLabel.text = [NSString stringWithFormat:@"笔画：%@",m.num];
+    [cell.loudButton addTarget:self action:@selector(loudAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.loudButton.tag = indexPath.row;
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    WordViewController *wordVC = [[WordViewController alloc]initWithNibName:@"WordViewController" bundle:[NSBundle mainBundle]];
+    wordVC.word = dataSource[indexPath.row];
+    [self.navigationController pushViewController:wordVC animated:YES];
+}
+
+
+#pragma mark 加载数据
 -(void)initData{
+    index = 1;
     dataSource = [NSMutableArray array];
     NSString *urlString;
     if (self.isPinyin) {
@@ -63,28 +94,51 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
+            [self.resultTableView.mj_header endRefreshing];
         });
     }];
     [dataTask resume];
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return dataSource.count;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ResultTableViewCell class])];
-    cell.backgroundColor = [UIColor clearColor];
-    ResultModel *m = dataSource[indexPath.row];
-    cell.wordLabel.text = m.simp;
-    cell.zhuyinLabel.text = [NSString stringWithFormat:@"[%@]",m.pinyin];
-    cell.bushouLabel.text = [NSString stringWithFormat:@"部首：%@",m.bushou];
-    cell.bihuaLabel.text = [NSString stringWithFormat:@"笔画：%@",m.num];
-    [cell.loudButton addTarget:self action:@selector(loudAction:) forControlEvents:UIControlEventTouchUpInside];
-    cell.loudButton.tag = indexPath.row;
-    return cell;
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"indexPath = %@",indexPath);
+-(void)moreData{
+    NSString *urlString;
+    if (self.isPinyin) {
+        urlString = [NSString stringWithFormat:@"http://www.chazidian.com/service/pinyin/%@/%d/10",self.searchWord,index];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://www.chazidian.com/service/bushou/%d/%d/10",self.bsID,index];
+    }
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        NSArray *array = dic[@"data"][@"words"];
+        for (NSDictionary *dictionary in array) {
+            BOOL hasWord = NO;
+            for (ResultModel *m in dataSource) {
+                if ([dictionary[@"simp"] isEqualToString:m.simp]) {
+                    hasWord = YES;
+                    break;
+                }
+            }
+            if (!hasWord) {
+                ResultModel *m = [ResultModel new];
+                m.simp = dictionary[@"simp"];
+                m.pinyin = dictionary[@"yin"][@"pinyin"];
+                m.bushou = dictionary[@"bushou"];
+                m.num = dictionary[@"num"];
+                [dataSource addObject:m];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.resultTableView reloadData];
+            [self.resultTableView.mj_footer endRefreshing];
+            index++;
+        });
+    }];
+    [dataTask resume];
 }
 
 #pragma mark 发音

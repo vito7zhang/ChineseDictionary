@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WordViewController : UIViewController
-
+@property (nonatomic,strong)NSString *word;
 @end

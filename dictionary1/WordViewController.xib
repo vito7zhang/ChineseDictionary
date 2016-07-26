@@ -14,8 +14,37 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="071-cY-xK1">
+                    <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                    <items>
+                        <barButtonItem image="pen" id="Dmg-s8-s9y">
+                            <color key="tintColor" red="0.9882352941176471" green="0.93333333333333335" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WHO-Lg-zEx"/>
+                        <barButtonItem image="document" id="aGn-hs-ona">
+                            <color key="tintColor" red="0.88235294117647056" green="0.87058823529411766" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="AWY-yH-g9j"/>
+                        <barButtonItem image="star" id="Qir-X8-K39">
+                            <color key="tintColor" red="0.88235294117647056" green="0.87058823529411766" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gKQ-2O-EW9"/>
+                        <barButtonItem image="share" id="wCX-MG-hC5">
+                            <color key="tintColor" red="0.91764705882352937" green="0.90588235294117647" blue="0.85098039215686272" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </items>
+                    <color key="barTintColor" red="0.57647058823529407" green="0.16078431372549021" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                </toolbar>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
         </view>
     </objects>
+    <resources>
+        <image name="document" width="29" height="21"/>
+        <image name="pen" width="25" height="28"/>
+        <image name="share" width="24" height="24"/>
+        <image name="star" width="28" height="27"/>
+    </resources>
 </document>
