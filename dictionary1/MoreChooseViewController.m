@@ -33,16 +33,12 @@
     myTableView.delegate = self;
     myTableView.dataSource = self;
     [self.view addSubview:myTableView];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    myTableView.layer.contents = (id)[UIImage imageNamed:@"beijing"].CGImage;
     myTableView.rowHeight = 80;
 }
 
 
 -(void)navigationControllerSetting{
-//    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [backButton setImage:[[UIImage imageNamed:@"10"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:backButton];
-//    self.navigationItem.leftBarButtonItem = leftButton;
     
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 44, 44)];
     titleLabel.text = @"汉语字典";
@@ -57,6 +53,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuse"];
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+        cell.backgroundColor = [UIColor clearColor];
     }
     cell.textLabel.text = datasource[indexPath.row];
     return cell;

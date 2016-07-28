@@ -7,8 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WordModel.h"
 
 @interface SqliteManager : NSObject
 +(NSArray *)findAllPinyin;
 +(NSArray *)findAllBushou;
+
++(BOOL)createSqliteWithTable;
++(BOOL)insertDataWithModel:(WordModel *)m;
++(BOOL)deleteDataWithModel:(WordModel *)m;
++(NSArray *)findAllCollection;
++(BOOL)isExistWithModel:(WordModel *)m;
 @end

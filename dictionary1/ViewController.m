@@ -24,13 +24,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UILabel *titlieLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
-    titlieLabel.backgroundColor = [UIColor clearColor];
-    titlieLabel.textColor = [UIColor whiteColor];
-    titlieLabel.text =@"汉语字典";
-    titlieLabel.font = [UIFont systemFontOfSize:40];
-    titlieLabel.textAlignment = NSTextAlignmentCenter;
-    self.navigationItem.titleView = titlieLabel;
+    self.navigationItem.title = @"汉语字典";
+    NSDictionary *textDic = @{NSFontAttributeName:[UIFont systemFontOfSize:30],NSForegroundColorAttributeName:[UIColor whiteColor]};
+    self.navigationController.navigationBar.titleTextAttributes = textDic;
+
+    self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@"10"];
     //背景图片
     UIImageView *backGroundImageView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backGroundImageView.image = [UIImage imageNamed:@"beijing"];

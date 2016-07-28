@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WordModel.h"
 
 @interface WordViewController : UIViewController
 @property (nonatomic,strong)NSString *word;
+@property (nonatomic,strong)WordModel *model;
 @end

@@ -10,7 +10,7 @@
 #define PrefixHeader_pch
 
 
-#define RGBColor(A,B,C) [UIColor colorWithRed:A/255.0 green:B/255.0 blue:B/255.0 alpha:1]
+#define RGBColor(A,B,C) [UIColor colorWithRed:A/255.0 green:B/255.0 blue:C/255.0 alpha:1]
 #define SCREEN_WIDTH self.view.bounds.size.width
 #define SCREEN_HEIGHT self.view.bounds.size.height
 

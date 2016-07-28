@@ -61,7 +61,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     WordViewController *wordVC = [[WordViewController alloc]initWithNibName:@"WordViewController" bundle:[NSBundle mainBundle]];
-    wordVC.word = dataSource[indexPath.row];
+    wordVC.word = [(ResultModel *)dataSource[indexPath.row] simp];
     [self.navigationController pushViewController:wordVC animated:YES];
 }
 
@@ -149,11 +149,11 @@
     _iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance]; _iFlySpeechSynthesizer.delegate = self;
     //设置语音合成的参数
     //语速,取值范围 0~100
-    [_iFlySpeechSynthesizer setParameter:@"0" forKey:[IFlySpeechConstant SPEED]];
+    [_iFlySpeechSynthesizer setParameter:@"20" forKey:[IFlySpeechConstant SPEED]];
     //音量;取值范围 0~100
     [_iFlySpeechSynthesizer setParameter:@"50" forKey: [IFlySpeechConstant VOLUME]];
     //发音人,默认为”xiaoyan”;可以设置的参数列表可参考个 性化发音人列表
-    [_iFlySpeechSynthesizer setParameter:@"xiaomei" forKey: [IFlySpeechConstant VOICE_NAME]];
+    [_iFlySpeechSynthesizer setParameter:@"xiaoyan" forKey: [IFlySpeechConstant VOICE_NAME]];
     //音频采样率,目前支持的采样率有 16000 和 8000
     [_iFlySpeechSynthesizer setParameter:@"8000" forKey: [IFlySpeechConstant SAMPLE_RATE]];
     //asr_audio_path保存录音文件路径，如不再需要，设置value为nil表示取消，默认目录是documents

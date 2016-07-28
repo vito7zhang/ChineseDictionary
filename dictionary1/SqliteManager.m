@@ -10,8 +10,13 @@
 #import <sqlite3.h>
 #import "BushouModel.h"
 #import "PinyinModel.h"
+#import <FMDB.h>
+
+FMDatabase *db;
 
 @implementation SqliteManager
+
+
 +(NSArray *)findAllPinyin{
     NSMutableArray *array = [NSMutableArray array];
     NSString *sqlitePath = [[NSBundle mainBundle]pathForResource:@"aaaaa2" ofType:@"sqlite"];
@@ -57,6 +62,60 @@
     sqlite3_close(db);
     return array;
 }
+
++(BOOL)createSqliteWithTable{
+    BOOL flag = NO;
+    NSString *dataPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/collection.sqlite"];
+    db = [FMDatabase databaseWithPath:dataPath];
+    [db open];
+    flag = [db executeUpdate:@"create table if not exists Collection(simp text,pinyin text,zhuyin text,tra text,frame text,bushou text,bsnum text,num text,seq text,hanyu text,base text,english text,idiom text)"];
+    return flag;
+}
+
++(BOOL)insertDataWithModel:(WordModel *)m{
+    BOOL flag = NO;
+    [self createSqliteWithTable];
+    flag = [db executeUpdate:@"insert or replace into Collection(simp,pinyin,zhuyin,tra,frame,bushou,bsnum,num,seq,hanyu,base,english,idiom)values(?,?,?,?,?,?,?,?,?,?,?,?,?)",m.simp,m.pinyin,m.zhuyin,m.tra,m.frame,m.bushou,m.bsnum,m.num,m.seq,m.hanyu,m.base,m.english,m.idiom];
+    NSLog(@"%@",NSHomeDirectory());
+    return flag;
+}
++(BOOL)deleteDataWithModel:(WordModel *)m{
+    BOOL flag = NO;
+    [self createSqliteWithTable];
+    flag = [db executeUpdate:@"delete from Collection where simp = ?",m.simp];
+    return flag;
+}
++(NSArray *)findAllCollection{
+    NSMutableArray *mArray = [NSMutableArray array];
+    [self createSqliteWithTable];
+    FMResultSet *set = [db executeQuery:@"select * from Collection"];
+    while ([set next]) {
+        WordModel *m = [WordModel new];
+        m.simp =  [set stringForColumn:@"simp"];
+        m.pinyin =  [set stringForColumn:@"pinyin"];
+        m.zhuyin =  [set stringForColumn:@"zhuyin"];
+        m.tra =  [set stringForColumn:@"tra"];
+        m.frame =  [set stringForColumn:@"frame"];
+        m.bushou =  [set stringForColumn:@"bushou"];
+        m.bsnum =  [set stringForColumn:@"bsnum"];
+        m.num =  [set stringForColumn:@"num"];
+        m.seq =  [set stringForColumn:@"seq"];
+        m.hanyu =  [set stringForColumn:@"hanyu"];
+        m.base =  [set stringForColumn:@"base"];
+        m.english =  [set stringForColumn:@"english"];
+        m.idiom =  [set stringForColumn:@"idiom"];
+        [mArray addObject:m];
+    }
+    return mArray;
+}
++(BOOL)isExistWithModel:(WordModel *)m{
+    FMResultSet *set = [db executeQuery:@"select * from Collection where simp=?",m.simp];
+    while ([set next]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
 
 
