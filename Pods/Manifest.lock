@@ -3,6 +3,14 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - MJRefresh (3.1.12)
+  - MOBFoundation (2.0.8)
+  - ShareSDK3 (3.3.2):
+    - ShareSDK3/ShareSDK (= 3.3.2)
+  - ShareSDK3/ShareSDK (3.3.2)
+  - ShareSDK3/ShareSDKPlatforms/QQ (3.3.2)
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo (3.3.2)
+  - ShareSDK3/ShareSDKPlatforms/WeChat (3.3.2)
+  - ShareSDK3/ShareSDKUI (3.3.2)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
   - YYKit/no-arc (1.0.7)
@@ -10,11 +18,19 @@ PODS:
 DEPENDENCIES:
   - FMDB (~> 2.6.2)
   - MJRefresh (= 3.1.12)
+  - MOBFoundation
+  - ShareSDK3
+  - ShareSDK3/ShareSDKPlatforms/QQ
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo
+  - ShareSDK3/ShareSDKPlatforms/WeChat
+  - ShareSDK3/ShareSDKUI
   - YYKit (~> 1.0.7)
 
 SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  MOBFoundation: 6f2006b941bd4002e2689a638d04c6b535c4cc64
+  ShareSDK3: c76cb96eb38e079952b8157071486d945faa2df2
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 
 COCOAPODS: 0.39.0

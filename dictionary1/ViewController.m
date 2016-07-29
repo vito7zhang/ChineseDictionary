@@ -10,11 +10,15 @@
 #import "MoreChooseViewController.h"
 #import "BushouSearchViewController.h"
 #import "PinyinSearchingViewController.h"
+#import "WordViewController.h"
+#import "UIViewController+ShowRemind.h"
 
-@interface ViewController ()
+@interface ViewController ()<UITextFieldDelegate>
 {
     UIView *pinyinView;
     UIView *bushouView;
+    UIImageView *recentlyImageView;
+    NSArray *recordArray;
 }
 @property (nonatomic,strong)UIButton *pinyinButton;
 @property (nonatomic,strong)UIButton *bushouButton;
@@ -27,8 +31,6 @@
     self.navigationItem.title = @"汉语字典";
     NSDictionary *textDic = @{NSFontAttributeName:[UIFont systemFontOfSize:30],NSForegroundColorAttributeName:[UIColor whiteColor]};
     self.navigationController.navigationBar.titleTextAttributes = textDic;
-
-    self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@"10"];
     //背景图片
     UIImageView *backGroundImageView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backGroundImageView.image = [UIImage imageNamed:@"beijing"];
@@ -75,6 +77,7 @@
     searchTextField.layer.cornerRadius = 15;
     searchTextField.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 20, 0)];
     searchTextField.leftViewMode = UITextFieldViewModeAlways;
+    searchTextField.delegate = self;
     [self.view addSubview:searchTextField];
     
     UILabel *recentlyLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 230, 150, 50)];
@@ -86,8 +89,9 @@
     linerImageView1.image = [UIImage imageNamed:@"dividing-line"];
     [self.view addSubview:linerImageView1];
     
-    UIImageView *recentlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(30, 290, SCREEN_WIDTH-60, 44)];
+    recentlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(30, 290, SCREEN_WIDTH-60, 44)];
     recentlyImageView.image = [UIImage imageNamed:@"jintian"];
+    recentlyImageView.userInteractionEnabled = YES;
     [self.view addSubview:recentlyImageView];
     
     UILabel *zimuLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 350, SCREEN_WIDTH-60, 44)];
@@ -140,6 +144,11 @@
 
     pinyinView.hidden = NO;
     bushouView.hidden = YES;
+    
+    
+    [self initRecord];
+    recordArray = [self findRecord];
+    [self initRecordButton];
 }
 //更多按钮方法
 -(void)moreButtonAction:(UIBarButtonItem *)sender{
@@ -178,6 +187,78 @@
     [self.navigationController pushViewController:bsVC animated:YES];
 }
 
+
+#pragma mark UITextfieldDelegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    if (textField.text.length == 1) {
+        int a = [textField.text characterAtIndex:0];
+        if(a > 0x4e00 && a < 0x9fff) {
+            WordViewController *wVC = [WordViewController new];
+            wVC.word = textField.text;
+            [self insertRecordWithText:wVC.word];
+            [self.navigationController pushViewController:wVC animated:YES];
+            textField.text = @"";
+            return  YES;
+        }
+    }
+    [self showRemindWithText:@"请输入单个中文"];
+    
+    
+    return YES;
+}
+
+#pragma mark 搜索记录
+-(void)initRecord{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *array = [userDefaults valueForKey:@"record"];
+    if (!array) {
+        [userDefaults setValue:[NSArray array] forKey:@"record"];
+    }
+}
+
+-(NSArray *)findRecord{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *array = [userDefaults valueForKey:@"record"];
+    return array;
+}
+
+-(void)insertRecordWithText:(NSString *)text{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:[userDefaults valueForKey:@"record"]];
+    [array insertObject:text atIndex:0];
+    if (array.count == 7) {
+        [array removeLastObject];
+    }
+    [userDefaults setValue:array forKey:@"record"];
+    [userDefaults synchronize];
+}
+
+-(void)initRecordButton{
+    CGFloat padding = (recentlyImageView.frame.size.width-6*44)/5;
+    for (int i = 0; i < recordArray.count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setTitle:recordArray[i] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(recordButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        button.frame = CGRectMake((44+padding)*i, 0, 44, 44);
+        [recentlyImageView addSubview:button];
+    }
+}
+
+-(void)recordButtonAction:(UIButton *)sender{
+    WordViewController *wVC = [WordViewController new];
+    wVC.word = sender.titleLabel.text;
+    [self.navigationController pushViewController:wVC animated:YES];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    recordArray = [self findRecord];
+    for (UIView *view in recentlyImageView.subviews) {
+        [view removeFromSuperview];
+    }
+    [self initRecordButton];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -10,6 +10,7 @@
 #import "SqliteManager.h"
 #import "PinyinModel.h"
 #import "ResultViewController.h"
+#import "UIViewController+BackNavigationBarButtonItem.h"
 
 @interface PinyinSearchingViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -23,6 +24,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setHomeButton];
+    [self setBackButton];
+    
     myTableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;

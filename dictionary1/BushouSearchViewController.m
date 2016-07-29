@@ -10,6 +10,7 @@
 #import "SqliteManager.h"
 #import "BushouModel.h"
 #import "ResultViewController.h"
+#import "UIViewController+BackNavigationBarButtonItem.h"
 
 @interface BushouSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -23,6 +24,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setBackButton];
+    [self setHomeButton];
+    
     UITableView *tableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
