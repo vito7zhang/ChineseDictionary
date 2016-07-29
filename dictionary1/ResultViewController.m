@@ -14,6 +14,7 @@
 #import <iflyMSC/IFlySpeechSynthesizerDelegate.h>
 #import <MJRefresh.h>
 #import "WordViewController.h"
+#import "UIViewController+BackNavigationBarButtonItem.h"
 
 @interface ResultViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechSynthesizerDelegate>
 {
@@ -28,6 +29,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setBackButton];
+    [self setHomeButton];
+    
     self.title = self.searchWord;
     [self initData];
     self.resultTableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];

@@ -12,6 +12,13 @@
 #import <iflyMSC/IFlySpeechSynthesizer.h>
 #import <iflyMSC/IFlySpeechSynthesizerDelegate.h>
 #import "SqliteManager.h"
+#import "UIViewController+BackNavigationBarButtonItem.h"
+#import "UIViewController+ShowRemind.h"
+
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKUI/ShareSDKUI.h>
+
+#import "UIView+Printscreen.h"
 
 @interface WordViewController ()<IFlySpeechSynthesizerDelegate>
 {
@@ -37,11 +44,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setBackButton];
+    [self setHomeButton];
+    
+    self.title = self.word;
     if (!_model) {
         [self initData];
     }else{
         isCollection = YES;
         m = self.model;
+        self.title = m.simp;
         self.starBarButtonItem.tintColor = RGBColor(254, 238, 153);
         [self setUI];
     }
@@ -130,36 +142,56 @@
 - (IBAction)copyButtonAction:(UIBarButtonItem *)sender {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = self.infoTextView.text;
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-80, SCREEN_HEIGHT/2-30, 160, 60)];
-    label.text = @"复制成功";
-    label.backgroundColor = [UIColor grayColor];
-    label.textColor = [UIColor whiteColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:30];
-    [self.view addSubview:label];
-    [UIView animateWithDuration:1.25 animations:^{
-        label.alpha = 0;
-    } completion:^(BOOL finished) {
-        [label removeFromSuperview];
-    }];
+    [self showRemindWithText:@"复制成功"];
 }
 - (IBAction)collectionButtonAction:(UIBarButtonItem *)sender {
     isCollection = !isCollection;
+  
     if (isCollection) {
         BOOL flag = [SqliteManager insertDataWithModel:m];
         NSLog(@"flag = %d",flag);
         sender.tintColor = RGBColor(254, 238, 153);
+        [self showRemindWithText:@"收藏成功"];
     }else{
         BOOL flag = [SqliteManager deleteDataWithModel:m];
         NSLog(@"flag = %d",flag);
+        [self showRemindWithText:@"取消收藏"];
         sender.tintColor = RGBColor(239, 236, 226);
     }
 }
 - (IBAction)shareButtonAction:(UIBarButtonItem *)sender {
-    
+    //1、创建分享参数
+    NSArray* imageArray = @[[self.view printsScreen]];
+    //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
+    if (imageArray) {
+        NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+        [shareParams SSDKSetupShareParamsByText:@"汉语字典好好玩啊"
+                                         images:imageArray
+                                            url:[NSURL URLWithString:@"https:www.google.com"]
+                                          title:@"汉语字典"
+                                           type:SSDKContentTypeAuto];
+    //2、分享（可以弹出我们的分享菜单和编辑界面）
+    [ShareSDK showShareActionSheet:nil items:nil shareParams:shareParams onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+        switch (state) {
+            case SSDKResponseStateSuccess:{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"分享成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil];
+                [alertController addAction:cancelAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+                break;
+            case SSDKResponseStateFail:{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"分享失败" message:[NSString stringWithFormat:@"%@",error] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil];
+                [alertController addAction:cancelAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+                break;
+            default:
+                break;
+        }}];
+    }
 }
-
-
 
 #pragma mark 发音
 -(IFlySpeechSynthesizer *)iFlySpeechSynthesizer{

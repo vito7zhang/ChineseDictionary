@@ -55,6 +55,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## MOBFoundation
+
+Copyright © 2012-2015 mob
+
+## ShareSDK3
+
+Copyright © 2012-2015 mob
+
 ## YYKit
 
 The MIT License (MIT)

@@ -18,10 +18,42 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx1af575168ea5ea35</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>QQ41E4A27D</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wb1376218815</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -36,10 +68,36 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+        <string>sinaweibo</string>
+        <string>sinaweibohd</string>
+        <string>sinaweibosso</string>
+        <string>sinaweibohdsso</string>
+        <string>weibosdk</string>
+        <string>weibosdk2.5</string>
+        <string>TencentWeibo</string>
+        <string>tencentweiboSdkv2</string>
+        <string>wechat</string>
+        <string>weixin</string>
+        <string>mqqOpensdkSSoLogin</string>
+        <string>mqqopensdkapiV2</string>
+        <string>mqqopensdkapiV3</string>
+        <string>wtloginmqq2</string>
+        <string>mqq</string>
+        <string>mqqapi</string>
+        <string>mqzoneopensdk</string>
+        <string>mqzoneopensdkapi</string>
+        <string>mqzoneopensdkapi19</string>
+        <string>mqzoneopensdkapiV2</string>
+        <string>mqqOpensdkSSoLogin</string>
+        <string>mqqopensdkapiV2</string>
+        <string>mqqopensdkapiV3</string>
+        <string>wtloginmqq2</string>
+        <string>mqqapi</string>
+        <string>mqqwpa</string>
+        <string>mqzone</string>
+        <string>mqq</string>
+	</array>
 </dict>
 </plist>
