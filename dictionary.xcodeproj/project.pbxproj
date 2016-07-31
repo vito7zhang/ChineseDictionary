@@ -194,7 +194,6 @@
 		8F48F1A11D3C89FA0080552A = {
 			isa = PBXGroup;
 			children = (
-				A0FDF68E1D405A5C00C3C04E /* libsqlite3.0.tbd */,
 				8F48F1AC1D3C89FA0080552A /* dictionary1 */,
 				8F48F1C61D3C89FA0080552A /* dictionary1Tests */,
 				8F48F1D11D3C89FB0080552A /* dictionary1UITests */,
@@ -416,6 +415,7 @@
 		FAB14037EA3CD6498859BBCA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A0FDF68E1D405A5C00C3C04E /* libsqlite3.0.tbd */,
 				A035C2361D4618B30044E1DF /* iflyMSC.framework */,
 				A01035751D46666900496F63 /* CoreGraphics.framework */,
 				A01035731D46666400496F63 /* QuartzCore.framework */,
@@ -505,7 +505,7 @@
 				TargetAttributes = {
 					8F48F1A91D3C89FA0080552A = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = CX4PQV8F6P;
+						DevelopmentTeam = RHFDMH5ZXJ;
 					};
 					8F48F1C21D3C89FA0080552A = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -786,6 +786,8 @@
 			baseConfigurationReference = 1A680335F44A2A41B074ACD5 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -797,6 +799,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ann.dictionary1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -805,6 +808,8 @@
 			baseConfigurationReference = 07D935A17E754278F9044ADD /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -816,6 +821,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ann.dictionary1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

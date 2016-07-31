@@ -76,7 +76,6 @@ FMDatabase *db;
     BOOL flag = NO;
     [self createSqliteWithTable];
     flag = [db executeUpdate:@"insert or replace into Collection(simp,pinyin,zhuyin,tra,frame,bushou,bsnum,num,seq,hanyu,base,english,idiom)values(?,?,?,?,?,?,?,?,?,?,?,?,?)",m.simp,m.pinyin,m.zhuyin,m.tra,m.frame,m.bushou,m.bsnum,m.num,m.seq,m.hanyu,m.base,m.english,m.idiom];
-    NSLog(@"%@",NSHomeDirectory());
     return flag;
 }
 +(BOOL)deleteDataWithModel:(WordModel *)m{
