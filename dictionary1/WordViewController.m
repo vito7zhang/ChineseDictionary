@@ -20,6 +20,8 @@
 
 #import "UIView+Printscreen.h"
 
+#import <MBProgressHUD.h>
+
 @interface WordViewController ()<IFlySpeechSynthesizerDelegate>
 {
     BOOL isCollection;
@@ -38,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *infoTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *starBarButtonItem;
 
+
 @end
 
 @implementation WordViewController
@@ -47,6 +50,7 @@
     [self setBackButton];
     [self setHomeButton];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beijing"]];
     self.title = self.word;
     if (!_model) {
         [self initData];
@@ -57,6 +61,7 @@
         self.starBarButtonItem.tintColor = RGBColor(254, 238, 153);
         [self setUI];
     }
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 -(void)setCollectionBarButtonItemColor{
@@ -93,6 +98,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setUI];
             [self setCollectionBarButtonItemColor];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     }];
     [dataTask resume];

@@ -15,9 +15,11 @@
 #import <MJRefresh.h>
 #import "WordViewController.h"
 #import "UIViewController+BackNavigationBarButtonItem.h"
+#import <MBProgressHUD.h>
 
 @interface ResultViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechSynthesizerDelegate>
 {
+    
     NSMutableArray *dataSource;
     IFlySpeechSynthesizer *_iFlySpeechSynthesizer;
     int index;
@@ -42,11 +44,16 @@
     self.resultTableView.rowHeight = 88;
     self.resultTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beijing"]];
     
+    //下拉刷新
     self.resultTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(initData)];
+    //上拉加载更多
     self.resultTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(moreData)];
+    
+    //活动指示器
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
-
+#pragma mark UITableViewDelegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return dataSource.count;
@@ -70,8 +77,11 @@
 }
 
 
+
+
 #pragma mark 加载数据
 -(void)initData{
+    
     index = 1;
     dataSource = [NSMutableArray array];
     NSString *urlString;
@@ -99,6 +109,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.resultTableView reloadData];
             [self.resultTableView.mj_header endRefreshing];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     }];
     [dataTask resume];
@@ -150,7 +161,8 @@
     ResultModel *m = dataSource[sender.tag];
     
     // 创建合成对象，为单例模式
-    _iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance]; _iFlySpeechSynthesizer.delegate = self;
+    _iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance];
+    _iFlySpeechSynthesizer.delegate = self;
     //设置语音合成的参数
     //语速,取值范围 0~100
     [_iFlySpeechSynthesizer setParameter:@"20" forKey:[IFlySpeechConstant SPEED]];
@@ -169,13 +181,6 @@
 
 //合成结束，此代理必须要实现
 - (void) onCompleted:(IFlySpeechError *) error{}
-//合成开始
-- (void) onSpeakBegin{}
-//合成缓冲进度
-- (void) onBufferProgress:(int) progress message:(NSString *)msg{}
-//合成播放进度
-- (void) onSpeakProgress:(int) progress{}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
