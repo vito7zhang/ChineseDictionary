@@ -67,7 +67,7 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtn-OD-r1L">
                     <rect key="frame" x="347" y="74" width="33" height="35"/>
-                    <state key="normal" title="Button" image="loud"/>
+                    <state key="normal" image="loud"/>
                     <connections>
                         <action selector="zhuyinButtonAction:" destination="-1" eventType="touchUpInside" id="Mlv-5X-2hd"/>
                     </connections>
@@ -118,7 +118,7 @@
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Njf-AT-Sof">
                     <rect key="frame" x="213" y="74" width="33" height="35"/>
-                    <state key="normal" title="Button" image="loud"/>
+                    <state key="normal" image="loud"/>
                     <connections>
                         <action selector="pinyinButtonAction:" destination="-1" eventType="touchUpInside" id="XtV-NM-ifT"/>
                     </connections>

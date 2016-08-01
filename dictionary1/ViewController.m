@@ -78,6 +78,7 @@
     searchTextField.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 20, 0)];
     searchTextField.leftViewMode = UITextFieldViewModeAlways;
     searchTextField.delegate = self;
+    searchTextField.returnKeyType = UIReturnKeyGo;
     [self.view addSubview:searchTextField];
     
     UILabel *recentlyLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 230, 150, 50)];
